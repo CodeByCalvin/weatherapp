@@ -8,7 +8,8 @@ import WeatherAPI from "./weatherAPI";
 
 function App() {
   // Logos for the weather
-  const sunLogo = "https://img.icons8.com/color/48/000000/sun--v1.png";
+  const sunLogo = "https://img.icons8.com/color/48/000000/very-sunny.png";
+
   const rainLogo = "https://img.icons8.com/color/48/000000/rain--v1.png";
   const cloudLogo = "https://img.icons8.com/color/48/000000/cloud--v1.png";
   const snowLogo = "https://img.icons8.com/color/48/000000/snow.png";
@@ -18,122 +19,80 @@ function App() {
   const weatherAPI = new WeatherAPI();
 
   // States
-  const [weatherData, setWeatherData] = useState(null);
-  const [temperature, setTemperature] = useState(null);
-  const [weatherDescription, setWeatherDescription] = useState(null);
-  const [weatherIcon, setWeatherIcon] = useState(null);
+  const [currentData, setCurrentData] = useState(null);
+  const [dailyData, setDailyData] = useState([]);
 
-  ////////////////// Fetching the current weather data
+  ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
     const fetchData = async () => {
+      // Fetching the weather data
       const data = await weatherAPI.getWeather();
-      setWeatherData(data);
+
+      // Fetching the current weather data
+      // Creating an object with the data
+      const currentData = {
+        temperature: (data.current.temp - 273.15).toFixed(1),
+        description:
+          data.current.weather[0].description.charAt(0).toUpperCase() +
+          data.current.weather[0].description.slice(1),
+        icon: getWeatherIcon(data.current.weather[0].main),
+      };
+      setCurrentData(currentData);
+
+      // Fetching the weekly weather data
+      // Creating an object with the data
+      const dailyData = data.daily.map((day) => ({
+        temperature: (day.temp.day - 273.15).toFixed(1),
+        description:
+          day.weather[0].description.charAt(0).toUpperCase() +
+          day.weather[0].description.slice(1),
+        icon: getWeatherIcon(day.weather[0].main),
+      }));
+
+      setDailyData(dailyData);
     };
     fetchData();
   }, []);
 
-  // Fetching the temperature
-  useEffect(() => {
-    if (!weatherData) return;
-    const fetchTemperature = () => {
-      const temperature = weatherData.current.temp - 273.15;
-      setTemperature(temperature.toFixed(1));
-    };
-    fetchTemperature();
-  }, [weatherData]);
-
-  // Fetching the weather description
-  useEffect(() => {
-    if (!weatherData) return;
-    const fetchWeatherDescription = () => {
-      const weatherDescription = weatherData.current.weather[0].description;
-      const weatherDescriptionFormatted =
-        weatherDescription.charAt(0).toUpperCase() +
-        weatherDescription.slice(1);
-      setWeatherDescription(weatherDescriptionFormatted);
-    };
-    fetchWeatherDescription();
-  }, [weatherData]);
-
-  // Fetching the weather icon
-  // Using a switch statement to determine which icon to use
-  useEffect(() => {
-    if (!weatherData) return;
-    const fetchWeatherIcon = () => {
-      const weatherName = weatherData.current.weather[0].main;
-      switch (weatherName) {
-        case "Clear":
-          setWeatherIcon(clearLogo);
-          break;
-        case "Clouds":
-          setWeatherIcon(cloudLogo);
-          break;
-        case "Rain":
-          setWeatherIcon(rainLogo);
-          break;
-        case "Snow":
-          setWeatherIcon(snowLogo);
-          break;
-        case "Thunderstorm":
-          setWeatherIcon(thunderLogo);
-          break;
-        default:
-          setWeatherIcon(null);
-      }
-    };
-    fetchWeatherIcon();
-  }, [weatherData]);
+  // Function to get the weather icon
+  function getWeatherIcon(weatherName) {
+    switch (weatherName) {
+      case "Clear":
+        return clearLogo;
+      case "Clouds":
+        return cloudLogo;
+      case "Rain":
+        return rainLogo;
+      case "Snow":
+        return snowLogo;
+      case "Thunderstorm":
+        return thunderLogo;
+      default:
+        return null;
+    }
+  }
 
   return (
     <div className="App">
       <div className="weather-day"></div>
       <div className="container">
         <div className="row">
-          <div className="col">
-            <WeekCard
-              day="Monday"
-              temperature={temperature}
-              description={weatherDescription}
-              img={weatherIcon}
-              alt="Image representing the current weather"
-            />
-          </div>
-          <div className="col">
-            <WeekCard
-              day="Monday"
-              temperature={temperature}
-              description={weatherDescription}
-              img={weatherIcon}
-              alt="Image representing the current weather"
-            />
-          </div>
-          <div className="col">
-            <WeekCard
-              day="Monday"
-              temperature={temperature}
-              description={weatherDescription}
-              img={weatherIcon}
-              alt="Image representing the current weather"
-            />
-          </div>
-          <div className="col">
-            <WeekCard
-              day="Monday"
-              temperature={temperature}
-              description={weatherDescription}
-              img={weatherIcon}
-              alt="Image representing the current weather"
-            />
-          </div>
-          <div className="col">
-            <WeekCard
-              day="Monday"
-              temperature={temperature}
-              description={weatherDescription}
-              img={weatherIcon}
-              alt="Image representing the current weather"
-            />
-          </div>
+          {/* // Create a new erray with the first 5 days of the week and then map over it to create each card component (index parameter determines the day of the) */}
+          {dailyData.slice(0, 5).map((day, index) => (
+            <div className="col" key={index}>
+              <WeekCard
+                day={
+                  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"][
+                    index
+                  ]
+                }
+                temperature={day.temperature}
+                description={day.description}
+                img={day.icon}
+                alt="Image representing the current weather"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
