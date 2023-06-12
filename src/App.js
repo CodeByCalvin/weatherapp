@@ -14,7 +14,8 @@ function App() {
   const cloudLogo = "https://img.icons8.com/color/48/000000/cloud--v1.png";
   const snowLogo = "https://img.icons8.com/color/48/000000/snow.png";
   const thunderLogo = "https://img.icons8.com/color/48/000000/storm.png";
-  const clearLogo = "https://img.icons8.com/color/48/000000/sun--v1.png";
+  const clearLogo =
+    "https://img.icons8.com/?size=48&id=72jK8a9VDKgF&format=png";
 
   const weatherAPI = new WeatherAPI();
 
@@ -57,6 +58,8 @@ function App() {
   // Function to get the weather icon
   function getWeatherIcon(weatherName) {
     switch (weatherName) {
+      case "Sunny":
+        return sunLogo;
       case "Clear":
         return clearLogo;
       case "Clouds":
