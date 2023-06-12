@@ -12,8 +12,7 @@ function App() {
   const rainLogo = "https://img.icons8.com/color/48/000000/rain--v1.png";
   const cloudLogo = "https://img.icons8.com/color/48/000000/cloud--v1.png";
   const snowLogo = "https://img.icons8.com/color/48/000000/snow.png";
-  const thunderLogo =
-    "https://img.icons8.com/color/48/000000/cloud-lightning.png";
+  const thunderLogo = "https://img.icons8.com/color/48/000000/storm.png";
   const clearLogo = "https://img.icons8.com/color/48/000000/sun--v1.png";
 
   const weatherAPI = new WeatherAPI();
@@ -24,7 +23,7 @@ function App() {
   const [weatherDescription, setWeatherDescription] = useState(null);
   const [weatherIcon, setWeatherIcon] = useState(null);
 
-  // Fetching the weather data
+  ////////////////// Fetching the current weather data
   useEffect(() => {
     const fetchData = async () => {
       const data = await weatherAPI.getWeather();
@@ -88,15 +87,54 @@ function App() {
   return (
     <div className="App">
       <div className="weather-day"></div>
-      <div className="weather-week-container">
-        <WeekCard
-          className="weather-week-card"
-          day="Monday"
-          temperature={temperature}
-          description={weatherDescription}
-          img={weatherIcon}
-          alt="Image representing the current weather"
-        />
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <WeekCard
+              day="Monday"
+              temperature={temperature}
+              description={weatherDescription}
+              img={weatherIcon}
+              alt="Image representing the current weather"
+            />
+          </div>
+          <div className="col">
+            <WeekCard
+              day="Monday"
+              temperature={temperature}
+              description={weatherDescription}
+              img={weatherIcon}
+              alt="Image representing the current weather"
+            />
+          </div>
+          <div className="col">
+            <WeekCard
+              day="Monday"
+              temperature={temperature}
+              description={weatherDescription}
+              img={weatherIcon}
+              alt="Image representing the current weather"
+            />
+          </div>
+          <div className="col">
+            <WeekCard
+              day="Monday"
+              temperature={temperature}
+              description={weatherDescription}
+              img={weatherIcon}
+              alt="Image representing the current weather"
+            />
+          </div>
+          <div className="col">
+            <WeekCard
+              day="Monday"
+              temperature={temperature}
+              description={weatherDescription}
+              img={weatherIcon}
+              alt="Image representing the current weather"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

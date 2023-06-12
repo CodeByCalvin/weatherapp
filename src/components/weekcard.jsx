@@ -1,10 +1,11 @@
 import React from "react";
 import "../css/weekcard.css";
 import Card from "react-bootstrap/Card";
+import "../css/weekcard.css";
 
 export default function WeekCard(props) {
   return (
-    <Card className="week-card" style={{ width: "18rem" }}>
+    <Card className="weather-week-card">
       <Card.Body>
         <Card.Title>{props.day}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
