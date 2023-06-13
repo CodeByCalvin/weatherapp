@@ -5,30 +5,57 @@
   align-items: center;
   justify-content: center;
   border: none;
+  background-color: transparent;
+  padding: 10px;
 }
 
-.weather-day-card .weather-location {
-  font-size: 60px;
+.weather-location {
+  font-size: 64px;
   font-weight: 600;
-  margin-bottom: 40px;
 }
 
-.weather-day-card .weather-icon {
-  margin: 20px;
+.weather-date {
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+
+.weather-icon {
   width: 100px;
   height: 100px;
 }
 
-.weather-day-card.card .weather-temperature {
+.weather-temperature {
   font-weight: 600;
   font-size: 50px;
+  margin-bottom: 0;
 }
 
-.weather-day-card .weather-description {
+.weather-description {
   font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.weather-extra-info {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.weather-feelslike {
+}
+
+.weather-humidity {
+}
+
+.weather-wind {
 }
 
 .weather-row {
   display: flex;
-  gap: 18px;
+  gap: 50px;
+  width: 100%;
 }

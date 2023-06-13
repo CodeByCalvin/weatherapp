@@ -23,8 +23,6 @@ function App() {
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
 
-  console.log(currentData);
-
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +36,13 @@ function App() {
         description:
           data.current.weather[0].description.charAt(0).toUpperCase() +
           data.current.weather[0].description.slice(1),
+        feelslike: (data.current.feels_like - 273.15).toFixed(1),
+        wind: data.current.wind_speed,
+        humidity: data.current.humidity,
+        sunrise: convertTimestampToTime(data.current.sunrise),
+        sunset: convertTimestampToTime(data.current.sunset),
         icon: getWeatherIcon(data.current.weather[0].main),
+        uvi: data.current.uvi,
       };
       setCurrentData(currentData);
 
@@ -49,12 +53,22 @@ function App() {
         description:
           day.weather[0].description.charAt(0).toUpperCase() +
           day.weather[0].description.slice(1),
+        summary: day.summary[0],
         icon: getWeatherIcon(day.weather[0].main),
       }));
 
       setDailyData(dailyData);
     };
+
+    const convertTimestampToTime = (timestamp) => {
+      const date = new Date(timestamp * 1000);
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      return `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+    };
+
     fetchData();
+    console.log(dailyData);
   }, []);
 
   // Function to get the weather icon
@@ -77,15 +91,54 @@ function App() {
     }
   }
 
+  function getCurrentDate() {
+    const date = new Date();
+    const day = date.getDay();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    return `${days[day]} ${months[month]} ${year}`;
+  }
+
   return (
     <div className="App">
       <div className="container-fluid weather-container">
         <div className="weather-day-container">
           <CurrentDayCard
             location="Sheffield, UK"
+            date={getCurrentDate()}
             temperature={currentData?.temperature}
             description={currentData?.description}
             img={currentData?.icon}
+            feelslike={currentData?.feelslike}
+            wind={currentData?.wind}
+            humidity={currentData?.humidity}
+            sunrise={currentData?.sunrise}
+            sunset={currentData?.sunset}
+            uvi={currentData?.uvi}
           />
         </div>
 
@@ -101,10 +154,10 @@ function App() {
                         index
                       ]
                     }
-                    temperature={day.temperature}
-                    description={day.description}
                     img={day.icon}
                     alt="Image representing the current weather"
+                    temperature={day?.temperature}
+                    description={day?.description}
                   />
                 </div>
               ))}
