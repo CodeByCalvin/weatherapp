@@ -1,21 +1,23 @@
 import React from "react";
 import "../css/weekcard.css";
-import Card from "react-bootstrap/Card";
-import "../css/weekcard.css";
 
 export default function WeekCard(props) {
   return (
-    <Card className="weather-week-card">
-      <Card.Body>
-        <Card.Title>{props.day}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">
-          {props.temperature}°C
-        </Card.Subtitle>
-        <Card.Text>{props.description}</Card.Text>
-        <p>
-          <img src={props.img} alt={props.alt}></img>
-        </p>
-      </Card.Body>
-    </Card>
+    <div className="week-weather-card">
+      <div className="week-card-body">
+        <div className="week-day-container">
+          <div className="week-day">{props.day}</div>
+        </div>
+        <div className="week-temperature-container">
+          <div className="week-temperature">{props.temperature}°C</div>
+        </div>
+        <div className="week-description-container">
+          <div className="week-description">{props.description}</div>
+        </div>
+        <div className="week-icon-container">
+          <img src={props.img} alt={props.alt} className="week-icon" />
+        </div>
+      </div>
+    </div>
   );
 }
