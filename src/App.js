@@ -1,15 +1,15 @@
 import logo from "./logo.svg";
-import "./App.css";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import WeekCard from "./components/weekcard";
+import CurrentDayCard from "./components/currentdaycard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import WeatherAPI from "./weatherAPI";
+import "./css/App.css";
 
 function App() {
   // Logos for the weather
   const sunLogo = "https://img.icons8.com/color/48/000000/very-sunny.png";
-
   const rainLogo = "https://img.icons8.com/color/48/000000/rain--v1.png";
   const cloudLogo = "https://img.icons8.com/color/48/000000/cloud--v1.png";
   const snowLogo = "https://img.icons8.com/color/48/000000/snow.png";
@@ -22,6 +22,8 @@ function App() {
   // States
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
+
+  console.log(currentData);
 
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
@@ -77,25 +79,37 @@ function App() {
 
   return (
     <div className="App">
-      <div className="weather-day"></div>
-      <div className="container">
-        <div className="row">
-          {/* // Create a new erray with the first 5 days of the week and then map over it to create each card component (index parameter determines the day of the) */}
-          {dailyData.slice(0, 5).map((day, index) => (
-            <div className="col" key={index}>
-              <WeekCard
-                day={
-                  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"][
-                    index
-                  ]
-                }
-                temperature={day.temperature}
-                description={day.description}
-                img={day.icon}
-                alt="Image representing the current weather"
-              />
+      <div className="container-fluid weather-container">
+        <div className="weather-day-container">
+          <CurrentDayCard
+            location="Sheffield, UK"
+            temperature={currentData?.temperature}
+            description={currentData?.description}
+            img={currentData?.icon}
+          />
+        </div>
+
+        <div>
+          <div className="week-container">
+            <div className="row">
+              {/* // Create a new erray with the first 5 days of the week and then map over it to create each card component (index parameter determines the day of the) */}
+              {dailyData.slice(0, 5).map((day, index) => (
+                <div className="col" key={index}>
+                  <WeekCard
+                    day={
+                      ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"][
+                        index
+                      ]
+                    }
+                    temperature={day.temperature}
+                    description={day.description}
+                    img={day.icon}
+                    alt="Image representing the current weather"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

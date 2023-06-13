@@ -1,4 +1,5 @@
-.weather-week-card {
+.weather-week-card.card {
   width: 100%;
-  border-radius: 12px;
+  border: none;
+  background-color: transparent;
 }
