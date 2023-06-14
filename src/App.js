@@ -1,6 +1,5 @@
 import logo from "./logo.svg";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WeekCard from "./components/weekcard";
 import CurrentDayCard from "./components/currentdaycard";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,11 +31,11 @@ function App() {
       // Fetching the current weather data
       // Creating an object with the data
       const currentData = {
-        temperature: (data.current.temp - 273.15).toFixed(1),
+        temperature: (data.current.temp - 273.15).toFixed(0),
         description:
           data.current.weather[0].description.charAt(0).toUpperCase() +
           data.current.weather[0].description.slice(1),
-        feelslike: (data.current.feels_like - 273.15).toFixed(1),
+        feelslike: (data.current.feels_like - 273.15).toFixed(0),
         wind: data.current.wind_speed,
         humidity: data.current.humidity,
         sunrise: convertTimestampToTime(data.current.sunrise),
@@ -49,7 +48,7 @@ function App() {
       // Fetching the weekly weather data
       // Creating an object with the data
       const dailyData = data.daily.map((day) => ({
-        temperature: (day.temp.day - 273.15).toFixed(1),
+        temperature: (day.temp.day - 273.15).toFixed(0),
         description:
           day.weather[0].description.charAt(0).toUpperCase() +
           day.weather[0].description.slice(1),
