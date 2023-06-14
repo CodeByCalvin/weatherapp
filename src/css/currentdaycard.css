@@ -1,12 +1,14 @@
 .weather-day-card.card {
   margin: auto;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: none;
   background-color: transparent;
   padding: 10px;
+  position: relative;
+  width: 100%;
 }
 
 .weather-location {
@@ -24,6 +26,25 @@
   height: 100px;
 }
 
+.weather-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+}
+
+.temp-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #000;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
 .weather-temperature {
   font-weight: 600;
   font-size: 50px;
@@ -39,6 +60,10 @@
   display: flex;
   flex-direction: column;
   background-color: transparent;
+}
+
+.weather-extra-info:first-child {
+  margin-right: 15px;
 }
 
 .bold {
