@@ -18,6 +18,8 @@ function App() {
 
   const weatherAPI = new WeatherAPI();
 
+  const today = new Date().getDay();
+
   // States
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
@@ -159,9 +161,15 @@ function App() {
                 <div className="col" key={index}>
                   <WeekCard
                     day={
-                      ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"][
-                        index
-                      ]
+                      [
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                        "Sunday",
+                      ][(today + index) % 7]
                     }
                     img={day.icon}
                     alt="Image representing the current weather"
