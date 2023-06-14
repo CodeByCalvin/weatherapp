@@ -9,7 +9,11 @@ export default function WeekCard(props) {
           <div className="week-day">{props.day}</div>
         </div>
         <div className="week-temperature-container">
-          <div className="week-temperature">{props.temperature}°C</div>
+          <div className="week-temperature">
+            {props.isCelsius
+              ? `${props.temperature}°C`
+              : `${props.toFarenheit(props.temperature)}°F`}
+          </div>
         </div>
         <div className="week-description-container">
           <div className="week-description">{props.description}</div>
