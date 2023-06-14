@@ -8,18 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 
 export default function CurrentDayCard(props) {
-  // Toggle between Celsius and Fahrenheit
-  const [isCelsius, setIsCelsius] = useState(true);
-  const toFarenheit = (celsius) => ((celsius * 9) / 5 + 32).toFixed(0);
-  const toggleTemperature = () => {
-    setIsCelsius(!isCelsius);
-  };
-
   return (
     <Card className="weather-day-card text-center mx-auto">
       <div className="weather-header">
-        <button className="temp-btn" onClick={toggleTemperature}>
-          {isCelsius ? (
+        <button className="temp-btn" onClick={props.toggleTemperature}>
+          {props.isCelsius ? (
             <>
               <FontAwesomeIcon
                 icon={faToggleOn}
@@ -49,9 +42,9 @@ export default function CurrentDayCard(props) {
         </div>
         <div className="col-md-4">
           <div className="display-4 weather-temperature text-nowrap">
-            {isCelsius
+            {props.isCelsius
               ? `${props.temperature}°C`
-              : `${toFarenheit(props.temperature)}°F`}
+              : `${props.toFarenheit(props.temperature)}°F`}
           </div>
           <div className="weather-description">{props.description}</div>
         </div>
@@ -59,9 +52,9 @@ export default function CurrentDayCard(props) {
           <div className="d-flex flex-column weather-extra-info">
             <div className="weather-feelslike">
               <div className="bold">Feels like:</div>{" "}
-              {isCelsius
+              {props.isCelsius
                 ? `${props.feelslike}°C`
-                : `${toFarenheit(props.feelslike)}°F`}
+                : `${props.toFarenheit(props.feelslike)}°F`}
             </div>
             <div className="weather-wind">
               <div className="bold">Wind:</div>

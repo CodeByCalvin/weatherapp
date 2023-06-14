@@ -22,6 +22,13 @@ function App() {
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
 
+  // Toggle between Celsius and Fahrenheit
+  const [isCelsius, setIsCelsius] = useState(true);
+  const toFarenheit = (celsius) => ((celsius * 9) / 5 + 32).toFixed(0);
+  const toggleTemperature = () => {
+    setIsCelsius(!isCelsius);
+  };
+
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
     const fetchData = async () => {
@@ -138,6 +145,9 @@ function App() {
             sunrise={currentData?.sunrise}
             sunset={currentData?.sunset}
             uvi={currentData?.uvi}
+            isCelsius={isCelsius}
+            toggleTemperature={toggleTemperature}
+            toFarenheit={toFarenheit}
           />
         </div>
 
@@ -157,6 +167,9 @@ function App() {
                     alt="Image representing the current weather"
                     temperature={day?.temperature}
                     description={day?.description}
+                    isCelsius={isCelsius}
+                    toggleTemperature={toggleTemperature}
+                    toFarenheit={toFarenheit}
                   />
                 </div>
               ))}
