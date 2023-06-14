@@ -25,10 +25,16 @@
 }
 
 .week-description {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
   font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
 }
 
 .week-icon {
