@@ -1,13 +1,23 @@
 import React from "react";
 import { useState } from "react";
+import WeatherAPI from "../weatherAPI";
 import "../css/search.css";
 
-function Search({ setLocation }) {
+function Search({ setLocation, setCurrentCoords }) {
   const [search, setSearch] = useState("");
+  const weatherAPI = new WeatherAPI();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLocation(search);
+    setSearch("");
+    const coords = await weatherAPI.getCoords(search);
+    if (coords && coords.length > 0) {
+      setCurrentCoords({
+        lat: coords[0].lat,
+        lon: coords[0].lon,
+      });
+    }
   }
 
   return (
