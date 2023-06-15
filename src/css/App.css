@@ -12,7 +12,6 @@
 
 .weather-day-container {
   display: flex;
-  justify-content: center;
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.095);
   border: none;
   border-radius: 20px;
@@ -20,6 +19,7 @@
   margin-bottom: 50px;
   height: auto;
   padding: 20px;
+  position: relative;
 }
 
 .week-container {
