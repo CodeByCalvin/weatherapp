@@ -5,7 +5,7 @@
   left: 5;
   z-index: 1;
   width: auto;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .search-input {
@@ -30,7 +30,7 @@
 }
 
 .search-btn:hover {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.104);
   color: white;
   transform: scale(1.1);
 }

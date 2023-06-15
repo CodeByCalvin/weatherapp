@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import WeatherAPI from "../weatherAPI";
 import "../css/search.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function Search({ setLocation, setCurrentCoords }) {
   const [search, setSearch] = useState("");
@@ -34,7 +36,10 @@ function Search({ setLocation, setCurrentCoords }) {
           required
         />
         <button className="search-btn" type="submit">
-          Search
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            style={{ color: "#000000" }}
+          />
         </button>
       </form>
     </div>
