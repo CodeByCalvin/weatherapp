@@ -1,6 +1,6 @@
 # Weather App built in React 🌦️
 
-<strong>Welcome to the GitHub repository for the WeatherApp! This project is a simple weather application built using React. It utilizes the OpenWeather API and OpenStreetMap API to retrieve weather data and display it on a map.</strong>
+<strong>Welcome to the GitHub repository for my weather app! This project is a simple weather application built using React. It utilizes the OpenWeather API and OpenStreetMap API to retrieve current day and weekly weather data, allowing the user to specify their location or dynamically retrieve it through the browser's geolocation. </strong>
 
 ![Homepage of weather app](https://i.imgur.com/0NhZ33l.png)
 
