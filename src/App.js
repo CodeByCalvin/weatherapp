@@ -18,14 +18,13 @@ function App() {
     "https://img.icons8.com/?size=48&id=72jK8a9VDKgF&format=png";
 
   const weatherAPI = new WeatherAPI();
-
   const today = new Date().getDay();
 
   // States
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
-
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState("London");
+  const [currentCoords, setCurrentCoords] = useState(null);
 
   // Toggle between Celsius and Fahrenheit
   const [isCelsius, setIsCelsius] = useState(true);
@@ -34,11 +33,48 @@ function App() {
     setIsCelsius(!isCelsius);
   };
 
+  // Get user's current location (latitude and longitude) and location name
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async function (position) {
+          setCurrentCoords({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+
+          // Fetching the location name based on geolocation (OpenStreetMap API)
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`,
+            {
+              headers: {
+                "User-Agent": process.env.REACT_APP_USER_AGENT,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          // Set the location name
+          setLocation(
+            data.address.city || data.address.town || data.address.village
+          );
+        },
+        function (error) {
+          console.error("Error Code = " + error.code + " - " + error.message);
+        }
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
     const fetchData = async () => {
       // Fetching the weather data
-      const data = await weatherAPI.getWeather(location);
+
+      const data = await weatherAPI.getWeather(location, currentCoords);
 
       // Fetching the current weather data
       // Creating an object with the data
@@ -79,7 +115,6 @@ function App() {
     };
 
     fetchData();
-    console.log(dailyData);
   }, [location]);
 
   // Function to get the weather icon
@@ -138,7 +173,10 @@ function App() {
     <div className="App">
       <div className="container-fluid weather-container">
         <div className="weather-day-container">
-          <Search setLocation={setLocation} />
+          <Search
+            setLocation={setLocation}
+            setCurrentCoords={setCurrentCoords}
+          />
           <CurrentDayCard
             location={
               location
