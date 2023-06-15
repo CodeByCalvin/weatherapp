@@ -5,6 +5,7 @@ import CurrentDayCard from "./components/currentdaycard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import WeatherAPI from "./weatherAPI";
 import "./css/App.css";
+import Search from "./components/Searchbar/search"
 
 function App() {
   // Logos for the weather
@@ -24,6 +25,8 @@ function App() {
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
 
+  const[location, setLocation] = useState(null);
+
   // Toggle between Celsius and Fahrenheit
   const [isCelsius, setIsCelsius] = useState(true);
   const toFarenheit = (celsius) => ((celsius * 9) / 5 + 32).toFixed(0);
@@ -33,9 +36,10 @@ function App() {
 
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
+    console.log(location);
     const fetchData = async () => {
       // Fetching the weather data
-      const data = await weatherAPI.getWeather();
+      const data = await weatherAPI.getWeather(location);
 
       // Fetching the current weather data
       // Creating an object with the data
@@ -77,7 +81,7 @@ function App() {
 
     fetchData();
     console.log(dailyData);
-  }, []);
+  }, [location]);
 
   // Function to get the weather icon
   function getWeatherIcon(weatherName) {
@@ -133,10 +137,14 @@ function App() {
 
   return (
     <div className="App">
+      <Search setLocation={setLocation} 
+      
+      
+      />
       <div className="container-fluid weather-container">
         <div className="weather-day-container">
           <CurrentDayCard
-            location="Sheffield, UK"
+            location={location}
             date={getCurrentDate()}
             temperature={currentData?.temperature}
             description={currentData?.description}
