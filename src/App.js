@@ -6,8 +6,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import WeatherAPI from "./weatherAPI";
 import "./css/App.css";
 import Search from "./components/search";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 function App() {
+  console.log("App rendered");
   // Logos for the weather
   const sunLogo = "https://img.icons8.com/color/48/000000/very-sunny.png";
   const rainLogo = "https://img.icons8.com/color/48/000000/rain--v1.png";
@@ -25,6 +28,24 @@ function App() {
   const [dailyData, setDailyData] = useState([]);
   const [location, setLocation] = useState("London");
   const [currentCoords, setCurrentCoords] = useState(null);
+
+  toastr.options = {
+    closeButton: true,
+    debug: false,
+    newestOnTop: false,
+    progressBar: true,
+    positionClass: "toast-top-left",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "4000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  };
 
   // Toggle between Celsius and Fahrenheit
   const [isCelsius, setIsCelsius] = useState(true);
@@ -52,20 +73,34 @@ function App() {
               },
             }
           );
-
           const data = await response.json();
-
           // Set the location name
           setLocation(
             data.address.city || data.address.town || data.address.village
           );
         },
         function (error) {
-          console.error("Error Code = " + error.code + " - " + error.message);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              toastr.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              toastr.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              toastr.error("The request to get user location timed out.");
+              break;
+            case error.UNKNOWN_ERROR:
+              toastr.error("An unknown error occurred.");
+              break;
+            default:
+              toastr.error("An unknown error occurred.");
+              break;
+          }
         }
       );
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      toastr.error("Geolocation is not supported by this browser.");
     }
   }, []);
 
