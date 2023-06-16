@@ -10,8 +10,7 @@ import toastr from "toastr";
 import "toastr/build/toastr.min.css";
 
 function App() {
-  console.log("App rendered");
-  // Logos for the weather
+  ////////// Logos for the weather
   const sunLogo = "https://img.icons8.com/color/48/000000/very-sunny.png";
   const rainLogo = "https://img.icons8.com/color/48/000000/rain--v1.png";
   const cloudLogo = "https://img.icons8.com/color/48/000000/cloud--v1.png";
@@ -23,11 +22,12 @@ function App() {
   const weatherAPI = new WeatherAPI();
   const today = new Date().getDay();
 
-  // States
+  ////////// States
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState([]);
   const [location, setLocation] = useState("London");
   const [currentCoords, setCurrentCoords] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   toastr.options = {
     closeButton: true,
@@ -47,14 +47,14 @@ function App() {
     hideMethod: "fadeOut",
   };
 
-  // Toggle between Celsius and Fahrenheit
+  ////////// Toggle between Celsius and Fahrenheit
   const [isCelsius, setIsCelsius] = useState(true);
   const toFarenheit = (celsius) => ((celsius * 9) / 5 + 32).toFixed(0);
   const toggleTemperature = () => {
     setIsCelsius(!isCelsius);
   };
 
-  // Get user's current location (latitude and longitude) and location name
+  ////////// Get user's current location (latitude and longitude) and location name
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -79,6 +79,7 @@ function App() {
             data.address.city || data.address.town || data.address.village
           );
         },
+        ////////// Toastr error messages
         function (error) {
           switch (error.code) {
             case error.PERMISSION_DENIED:
@@ -107,39 +108,44 @@ function App() {
   ////////////////// Fetching the weather data (current and weekly)
   useEffect(() => {
     const fetchData = async () => {
-      // Fetching the weather data
+      setIsLoading(true);
 
-      const data = await weatherAPI.getWeather(location, currentCoords);
+      try {
+        const data = await weatherAPI.getWeather(location, currentCoords);
 
-      // Fetching the current weather data
-      // Creating an object with the data
-      const currentData = {
-        temperature: (data.current.temp - 273.15).toFixed(0),
-        description:
-          data.current.weather[0].description.charAt(0).toUpperCase() +
-          data.current.weather[0].description.slice(1),
-        feelslike: (data.current.feels_like - 273.15).toFixed(0),
-        wind: data.current.wind_speed,
-        humidity: data.current.humidity,
-        sunrise: convertTimestampToTime(data.current.sunrise),
-        sunset: convertTimestampToTime(data.current.sunset),
-        icon: getWeatherIcon(data.current.weather[0].main),
-        uvi: data.current.uvi,
-      };
-      setCurrentData(currentData);
+        ////////// Fetching the current weather data
 
-      // Fetching the weekly weather data
-      // Creating an object with the data
-      const dailyData = data.daily.map((day) => ({
-        temperature: (day.temp.day - 273.15).toFixed(0),
-        description:
-          day.weather[0].description.charAt(0).toUpperCase() +
-          day.weather[0].description.slice(1),
-        summary: day.summary[0],
-        icon: getWeatherIcon(day.weather[0].main),
-      }));
+        const currentData = {
+          temperature: (data.current.temp - 273.15).toFixed(0),
+          description:
+            data.current.weather[0].description.charAt(0).toUpperCase() +
+            data.current.weather[0].description.slice(1),
+          feelslike: (data.current.feels_like - 273.15).toFixed(0),
+          wind: data.current.wind_speed,
+          humidity: data.current.humidity,
+          sunrise: convertTimestampToTime(data.current.sunrise),
+          sunset: convertTimestampToTime(data.current.sunset),
+          icon: getWeatherIcon(data.current.weather[0].main),
+          uvi: data.current.uvi,
+        };
+        setCurrentData(currentData);
 
-      setDailyData(dailyData);
+        ////////// Fetching the weekly weather data
+        const dailyData = data.daily.map((day) => ({
+          temperature: (day.temp.day - 273.15).toFixed(0),
+          description:
+            day.weather[0].description.charAt(0).toUpperCase() +
+            day.weather[0].description.slice(1),
+          summary: day.summary[0],
+          icon: getWeatherIcon(day.weather[0].main),
+        }));
+
+        setDailyData(dailyData);
+      } catch (error) {
+        toastr.error("An error occurred while fetching the data.");
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     const convertTimestampToTime = (timestamp) => {
@@ -152,7 +158,7 @@ function App() {
     fetchData();
   }, [location]);
 
-  // Function to get the weather icon
+  ////////// Function to get the weather icon
   function getWeatherIcon(weatherName) {
     switch (weatherName) {
       case "Sunny":
@@ -172,6 +178,7 @@ function App() {
     }
   }
 
+  ////////// Function to get the current date
   function getCurrentDate() {
     const date = new Date();
     const day = date.getDay();
@@ -212,6 +219,7 @@ function App() {
             setLocation={setLocation}
             setCurrentCoords={setCurrentCoords}
           />
+          {/* //////////////////////// Current day card */}
           <CurrentDayCard
             location={
               location
@@ -231,13 +239,14 @@ function App() {
             isCelsius={isCelsius}
             toggleTemperature={toggleTemperature}
             toFarenheit={toFarenheit}
+            isloading={isLoading}
           />
         </div>
 
         <div>
           <div className="week-container">
             <div className="row">
-              {/* // Create a new erray with the first 5 days of the week and then map over it to create each card component (index parameter determines the day of the) */}
+              {/* //////////////////////// Weekly cards */}
               {dailyData.slice(0, 5).map((day, index) => (
                 <div className="col" key={index}>
                   <WeekCard
@@ -259,6 +268,7 @@ function App() {
                     isCelsius={isCelsius}
                     toggleTemperature={toggleTemperature}
                     toFarenheit={toFarenheit}
+                    isLoading={isLoading}
                   />
                 </div>
               ))}
