@@ -10,13 +10,22 @@ export default function WeekCard(props) {
         </div>
         <div className="week-temperature-container">
           <div className="week-temperature">
-            {props.isCelsius
-              ? `${props.temperature}°C`
-              : `${props.toFarenheit(props.temperature)}°F`}
+            {props.isLoading
+              ? "Loading..."
+              : props.isCelsius
+              ? props.temperature
+                ? `${props.temperature}°C`
+                : "Loading..."
+              : props.temperature
+              ? `${props.toFarenheit(props.temperature)}°F`
+              : "Loading..."}
           </div>
         </div>
         <div className="week-description-container">
-          <div className="week-description">{props.description}</div>
+          <div className="week-description">
+            {" "}
+            {props.isLoading ? "Loading..." : props.description || "Loading..."}
+          </div>
         </div>
         <div className="week-icon-container">
           <img src={props.img} alt={props.alt} className="week-icon" />
