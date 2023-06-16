@@ -11,23 +11,28 @@ export default function CurrentDayCard(props) {
   return (
     <Card className="weather-day-card text-center mx-auto">
       <div className="weather-header">
-        <button className="temp-btn" onClick={props.toggleTemperature}>
-          {props.isCelsius ? (
-            <>
-              <FontAwesomeIcon
-                icon={faToggleOn}
-                rotation={180}
-                style={{ color: "#000000" }}
-              />
-              <span> °C</span>
-            </>
-          ) : (
-            <>
-              <FontAwesomeIcon icon={faToggleOn} style={{ color: "#000000" }} />
-              <span> °F</span>
-            </>
-          )}
-        </button>
+        {props.isLocationValid && (
+          <button className="temp-btn" onClick={props.toggleTemperature}>
+            {props.isCelsius ? (
+              <>
+                <FontAwesomeIcon
+                  icon={faToggleOn}
+                  rotation={180}
+                  style={{ color: "#000000" }}
+                />
+                <span> °C</span>
+              </>
+            ) : (
+              <>
+                <FontAwesomeIcon
+                  icon={faToggleOn}
+                  style={{ color: "#000000" }}
+                />
+                <span> °F</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       <div className="weather-location">
