@@ -4,8 +4,10 @@ import WeatherAPI from "../weatherAPI";
 import "../css/search.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
-function Search({ setLocation, setCurrentCoords }) {
+function Search({ setLocation, setCurrentCoords, setIsLocationValid }) {
   const [search, setSearch] = useState("");
   const weatherAPI = new WeatherAPI();
 
@@ -19,6 +21,10 @@ function Search({ setLocation, setCurrentCoords }) {
         lat: coords[0].lat,
         lon: coords[0].lon,
       });
+      setIsLocationValid(true);
+    } else {
+      setIsLocationValid(false);
+      toastr.error("Invalid Location. Please try again.");
     }
   }
 

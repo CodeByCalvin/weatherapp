@@ -28,6 +28,7 @@ function App() {
   const [location, setLocation] = useState("London");
   const [currentCoords, setCurrentCoords] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLocationValid, setIsLocationValid] = useState(true);
 
   toastr.options = {
     closeButton: true,
@@ -218,61 +219,67 @@ function App() {
           <Search
             setLocation={setLocation}
             setCurrentCoords={setCurrentCoords}
+            setIsLocationValid={setIsLocationValid}
           />
           {/* //////////////////////// Current day card */}
-          <CurrentDayCard
-            location={
-              location
-                ? location.charAt(0).toUpperCase() + location.slice(1)
-                : ""
-            }
-            date={getCurrentDate()}
-            temperature={currentData?.temperature}
-            description={currentData?.description}
-            img={currentData?.icon}
-            feelslike={currentData?.feelslike}
-            wind={currentData?.wind}
-            humidity={currentData?.humidity}
-            sunrise={currentData?.sunrise}
-            sunset={currentData?.sunset}
-            uvi={currentData?.uvi}
-            isCelsius={isCelsius}
-            toggleTemperature={toggleTemperature}
-            toFarenheit={toFarenheit}
-            isloading={isLoading}
-          />
+          {
+            <CurrentDayCard
+              location={
+                location
+                  ? location.charAt(0).toUpperCase() + location.slice(1)
+                  : ""
+              }
+              date={getCurrentDate()}
+              temperature={currentData?.temperature}
+              description={currentData?.description}
+              img={currentData?.icon}
+              feelslike={currentData?.feelslike}
+              wind={currentData?.wind}
+              humidity={currentData?.humidity}
+              sunrise={currentData?.sunrise}
+              sunset={currentData?.sunset}
+              uvi={currentData?.uvi}
+              isCelsius={isCelsius}
+              toggleTemperature={toggleTemperature}
+              toFarenheit={toFarenheit}
+              isloading={isLoading}
+              isLocationValid={isLocationValid}
+            />
+          }
         </div>
 
         <div>
           <div className="week-container">
-            <div className="row">
-              {/* //////////////////////// Weekly cards */}
-              {dailyData.slice(0, 5).map((day, index) => (
-                <div className="col" key={index}>
-                  <WeekCard
-                    day={
-                      [
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday",
-                        "Sunday",
-                      ][(today + index) % 7]
-                    }
-                    img={day.icon}
-                    alt="Image representing the current weather"
-                    temperature={day?.temperature}
-                    description={day?.description}
-                    isCelsius={isCelsius}
-                    toggleTemperature={toggleTemperature}
-                    toFarenheit={toFarenheit}
-                    isLoading={isLoading}
-                  />
-                </div>
-              ))}
-            </div>
+            {isLocationValid && (
+              <div className="row">
+                {/* //////////////////////// Weekly cards */}
+                {dailyData.slice(0, 5).map((day, index) => (
+                  <div className="col" key={index}>
+                    <WeekCard
+                      day={
+                        [
+                          "Monday",
+                          "Tuesday",
+                          "Wednesday",
+                          "Thursday",
+                          "Friday",
+                          "Saturday",
+                          "Sunday",
+                        ][(today + index) % 7]
+                      }
+                      img={day.icon}
+                      alt="Image representing the current weather"
+                      temperature={day?.temperature}
+                      description={day?.description}
+                      isCelsius={isCelsius}
+                      toggleTemperature={toggleTemperature}
+                      toFarenheit={toFarenheit}
+                      isLoading={isLoading}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
