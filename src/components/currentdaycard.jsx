@@ -30,12 +30,16 @@ export default function CurrentDayCard(props) {
         </button>
       </div>
 
-      <div className="weather-location">{props.location}</div>
-      <div className="weather-date">{props.date}</div>
+      <div className="weather-location">
+        {props.isLocationValid ? props.location : "Invalid location."}
+      </div>
+      <div className="weather-date">
+        {props.isLocationValid ? props.date : "Please try again."}
+      </div>
       <Card.Body className="d-flex align-items-center justify-content-center weather-row">
         <div className="col-md-4">
           <img
-            src={props.img}
+            src={props.isLocationValid ? props.img : ""}
             alt={props.alt}
             className="img-fluid weather-icon"
           />
@@ -43,81 +47,90 @@ export default function CurrentDayCard(props) {
         <div className="col-md-4">
           <div className="display-4 weather-temperature text-nowrap">
             <span>
-              {props.isLoading
-                ? "Loading..."
-                : props.isCelsius
-                ? props.temperature
-                  ? `${props.temperature}°C`
+              {props.isLocationValid
+                ? props.isLoading
+                  ? "Loading..."
+                  : props.isCelsius
+                  ? props.temperature
+                    ? `${props.temperature}°C`
+                    : "Loading..."
+                  : props.temperature
+                  ? `${props.toFarenheit(props.temperature)}°F`
                   : "Loading..."
-                : props.temperature
-                ? `${props.toFarenheit(props.temperature)}°F`
-                : "Loading..."}
+                : ""}
             </span>
           </div>
+
           <div className="weather-description">
-            {props.isLoading ? "Loading..." : props.description || "Loading..."}
-          </div>
-        </div>
-        <div className="col-md-4 d-flex ">
-          <div className="d-flex flex-column weather-extra-info">
-            <div className="weather-feelslike">
-              <div className="bold">Feels like:</div>{" "}
-              {props.isLoading
+            {props.isLocationValid
+              ? props.isLoading
                 ? "Loading..."
-                : props.isCelsius
-                ? props.feelslike
-                  ? `${props.feelslike}°C`
-                  : "Loading..."
-                : props.feelslike
-                ? `${props.toFarenheit(props.feelslike)}°F`
-                : "Loading..."}
-            </div>
-            <div className="weather-wind">
-              <div className="bold">Wind:</div>
-              {props.isLoading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>{props.wind ? `${props.wind} mph` : "Loading..."}</span>
-              )}
-            </div>
-            <div className="weather-humidity">
-              <div className="bold">Humidity:</div>
-              {props.isLoading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>
-                  {props.humidity ? `${props.humidity}%` : "Loading..."}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="d-flex flex-column weather-extra-info">
-            <div className="weather-sunrise">
-              <div className="bold">Sunrise:</div>
-              {props.isLoading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>{props.sunrise || "Loading..."}</span>
-              )}
-            </div>
-            <div className="weather-sunset">
-              <div className="bold">Sunset:</div>
-              {props.isLoading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>{props.sunset || "Loading..."}</span>
-              )}
-            </div>
-            <div className="weather-third-info">
-              <div className="bold">UVI:</div>
-              {props.isLoading ? (
-                <span>Loading...</span>
-              ) : (
-                <span>{props.uvi || "Loading..."}</span>
-              )}
-            </div>
+                : props.description || "Loading..."
+              : ""}
           </div>
         </div>
+        {props.isLocationValid && (
+          <div className="col-md-4 d-flex">
+            <div className="d-flex flex-column weather-extra-info">
+              <div className="weather-feelslike">
+                <div className="bold">Feels like:</div>{" "}
+                {props.isLoading
+                  ? "Loading..."
+                  : props.isCelsius
+                  ? props.feelslike
+                    ? `${props.feelslike}°C`
+                    : "Loading..."
+                  : props.feelslike
+                  ? `${props.toFarenheit(props.feelslike)}°F`
+                  : "Loading..."}
+              </div>
+              <div className="weather-wind">
+                <div className="bold">Wind:</div>
+                {props.isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <span>{props.wind ? `${props.wind} mph` : "Loading..."}</span>
+                )}
+              </div>
+              <div className="weather-humidity">
+                <div className="bold">Humidity:</div>
+                {props.isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <span>
+                    {props.humidity ? `${props.humidity}%` : "Loading..."}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="d-flex flex-column weather-extra-info">
+              <div className="weather-sunrise">
+                <div className="bold">Sunrise:</div>
+                {props.isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <span>{props.sunrise || "Loading..."}</span>
+                )}
+              </div>
+              <div className="weather-sunset">
+                <div className="bold">Sunset:</div>
+                {props.isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <span>{props.sunset || "Loading..."}</span>
+                )}
+              </div>
+              <div className="weather-third-info">
+                <div className="bold">UVI:</div>
+                {props.isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <span>{props.uvi || "Loading..."}</span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </Card.Body>
     </Card>
   );
